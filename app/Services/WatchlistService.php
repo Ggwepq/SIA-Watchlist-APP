@@ -32,4 +32,17 @@ class WatchlistService
     {
         return Http::withHeaders($headers)->delete($this->baseUrl . $endpoint);
     }
+
+    public function makeRequest($method, $endpoint, $data = [])
+    {
+        $token = session('watchlist_token');
+
+        if (!$token) {
+            throw new \Exception('No token found. Please log in.');
+        }
+
+        return Http::withHeaders([
+            'Authorization' => 'Bearer ' . $token,
+        ])->$method(config('services.watchlist_api.base_url') . $endpoint, $data);
+    }
 }
