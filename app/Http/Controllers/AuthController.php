@@ -31,7 +31,7 @@ class AuthController extends Controller
             return redirect()->back()->withErrors($validator->errors());
         }
 
-        $response = $this->watchlist_service->get('/user', [
+        $response = $this->watchlist_service->get('user', [
             'Authorization' => 'Bearer ' . $request->watchlist_token,
         ]);
 

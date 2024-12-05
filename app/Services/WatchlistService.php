@@ -40,9 +40,17 @@ class WatchlistService
         if (!$token) {
             throw new \Exception('No token found. Please log in.');
         }
+        // Ensure the base URL ends with a single slash
+        $baseUrl = rtrim($this->baseUrl, '/');
+
+        // Ensure the endpoint starts without a slash
+        $endpoint = ltrim($endpoint, '/');
+        $fullUrl = "{$baseUrl}/{$endpoint}";
+
+        logger()->info("Requesting URL: $fullUrl");
 
         return Http::withHeaders([
             'Authorization' => 'Bearer ' . $token,
-        ])->$method(config('services.watchlist_api.base_url') . $endpoint, $data);
+        ])->$method($fullUrl, $data);
     }
 }

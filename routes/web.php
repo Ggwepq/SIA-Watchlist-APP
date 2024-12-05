@@ -18,13 +18,17 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+})->name('home');
+
+Route::controller(AuthController::class)->group(function () {
+    Route::post('/verify', 'verifyToken')->name('verify');
+    Route::get('/login', 'loginForm')->name('login.form');
+    Route::post('/login', 'login')->name('login');
+    Route::get('/register', 'registerForm')->name('register.form');
+    Route::post('/register', 'register')->name('register');
+    Route::get('/logout', 'logout')->name('logout');
 });
 
-Route::post('/verify', [AuthController::class, 'verifyToken'])->name('verify');
-Route::get('/login', [AuthController::class, 'loginForm'])->name('login.form');
-Route::post('/login', [AuthController::class, 'login'])->name('login');
-Route::get('/register', [AuthController::class, 'registerForm'])->name('register.form');
-Route::post('/register', [AuthController::class, 'register'])->name('register');
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-
 Route::get('/watchlist', [WatchlistController::class, 'index'])->name('watchlists.index');
+Route::get('/watchlist/{id}', [WatchlistController::class, 'showWatchlist'])->name('watchlist.show');
+Route::get('/player/{id}', [WatchlistController::class, 'player'])->name('player');
